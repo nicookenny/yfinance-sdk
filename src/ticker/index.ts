@@ -63,3 +63,5 @@ export {
   fetchEpsTrend,
 } from "./analysis.js";
 export type { PriceTargets, EstimateRow, EpsTrendRow } from "./analysis.js";
+export { fetchExpirations, fetchOptionChain } from "./options.js";
+export type { OptionContract, OptionChain } from "./options.js";

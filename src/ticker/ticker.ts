@@ -57,6 +57,12 @@ import {
   type EpsTrendRow,
 } from "./analysis.js";
 
+import {
+  fetchExpirations,
+  fetchOptionChain,
+  type OptionChain,
+} from "./options.js";
+
 type SignalOpt = { signal?: AbortSignal };
 
 export class Ticker {
@@ -228,5 +234,20 @@ export class Ticker {
   /** EPS trend (current vs 7/30/60/90 days ago) per period. */
   async epsTrend(options?: SignalOpt): Promise<EpsTrendRow[]> {
     return fetchEpsTrend(this.client, this.symbol, options?.signal);
+  }
+
+  // --- Options ---
+
+  /** Available option expiration dates. yfinance `.options`. */
+  async options(opts?: SignalOpt): Promise<Date[]> {
+    return fetchExpirations(this.client, this.symbol, opts?.signal);
+  }
+
+  /** Option chain (calls + puts) for a given or the nearest expiration. */
+  async optionChain(
+    date?: Date | number | string,
+    opts?: SignalOpt,
+  ): Promise<OptionChain> {
+    return fetchOptionChain(this.client, this.symbol, date, opts?.signal);
   }
 }
