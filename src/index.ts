@@ -12,3 +12,4 @@ export type { DownloadOptions, DownloadResult } from "./download.js";
 export { Tickers } from "./tickers.js";
 export * from "./search/index.js";
 export * from "./domain/index.js";
+export * from "./funds/index.js";

@@ -62,6 +62,7 @@ import {
   fetchOptionChain,
   type OptionChain,
 } from "./options.js";
+import { fetchFundsData, type FundsData } from "../funds/funds.js";
 
 type SignalOpt = { signal?: AbortSignal };
 
@@ -249,5 +250,12 @@ export class Ticker {
     opts?: SignalOpt,
   ): Promise<OptionChain> {
     return fetchOptionChain(this.client, this.symbol, date, opts?.signal);
+  }
+
+  // --- Funds ---
+
+  /** Fund/ETF holdings and weightings. yfinance `.funds_data`. */
+  async fundsData(opts?: SignalOpt): Promise<FundsData> {
+    return fetchFundsData(this.client, this.symbol, opts?.signal);
   }
 }
