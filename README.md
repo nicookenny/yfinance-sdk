@@ -7,9 +7,9 @@ A typed TypeScript port of [yfinance](https://github.com/ranaroussi/yfinance) fo
 - Organized by domain, not by mirroring yfinance's Python internals.
 - Typed error hierarchy, pluggable cache, built-in rate limiting and auth.
 
-> Status: **Steps 0–5 complete** (HTTP core, history, quote/info,
-> fundamentals, holders/analysis, options). Higher-level modules are landing
-> incrementally — see the roadmap below.
+> Status: **Steps 0–6 complete** (HTTP core, history, quote/info,
+> fundamentals, holders/analysis, options, bulk download). Higher-level modules
+> are landing incrementally — see the roadmap below.
 
 ## Install
 
@@ -110,8 +110,8 @@ All thrown errors extend `YahooFinanceError`:
 | 3 | Fundamentals (income, balance sheet, cash flow) | ✅ Done |
 | 4 | Holders / insiders / analyst targets & estimates | ✅ Done |
 | 5 | Options chains | ✅ Done |
-| 6 | Bulk download + Tickers | ⏳ Next |
-| 7 | Search / Lookup / Screener | |
+| 6 | Bulk download + Tickers | ✅ Done |
+| 7 | Search / Lookup / Screener | ⏳ Next |
 | 8 | Domain: Market / Sector / Industry | |
 | 9 | Funds | |
 | 10 | Live WebSocket streaming | |
