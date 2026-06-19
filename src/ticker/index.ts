@@ -18,3 +18,19 @@ export type {
   Split,
   CorporateAction,
 } from "./history-types.js";
+export {
+  fetchQuoteSummary,
+  fetchInfo,
+  fetchFastInfo,
+  fetchCalendar,
+  fetchRecommendations,
+  unwrap,
+  INFO_MODULES,
+} from "./quote.js";
+export type {
+  QuoteSummary,
+  Info,
+  FastInfo,
+  Calendar,
+  RecommendationRow,
+} from "./quote-types.js";

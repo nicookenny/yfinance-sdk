@@ -7,8 +7,8 @@ A typed TypeScript port of [yfinance](https://github.com/ranaroussi/yfinance) fo
 - Organized by domain, not by mirroring yfinance's Python internals.
 - Typed error hierarchy, pluggable cache, built-in rate limiting and auth.
 
-> Status: **Steps 0–1 complete** (HTTP core + Ticker history). Higher-level
-> modules are landing incrementally — see the roadmap below.
+> Status: **Steps 0–2 complete** (HTTP core + Ticker history + quote/info).
+> Higher-level modules are landing incrementally — see the roadmap below.
 
 ## Install
 
@@ -37,6 +37,14 @@ By default `history()` auto-adjusts OHLC with the adjusted close (set
 `autoAdjust: false` to keep raw prices and the `adjClose` column) and includes
 dividend/split columns (`actions: false` to omit). Use `start`/`end` (Date,
 ms-epoch, or `YYYY-MM-DD`) for an explicit range instead of `period`.
+
+```ts
+const info = await aapl.info();            // flattened company/quote record
+const fast = await aapl.fastInfo();        // cheap snapshot: price, marketCap, …
+const cal = await aapl.calendar();         // earnings + dividend dates
+const recs = await aapl.recommendations(); // analyst trend per period
+const raw = await aapl.quoteSummary(["price", "summaryDetail"]); // typed modules
+```
 
 ## Usage (core layer)
 
@@ -92,8 +100,8 @@ All thrown errors extend `YahooFinanceError`:
 |------|--------|--------|
 | 0 | Foundation (HTTP core: client, auth, cache, rate-limit, errors) | ✅ Done |
 | 1 | Ticker + history (OHLCV, dividends, splits) | ✅ Done |
-| 2 | Quote / info / news / calendar | ⏳ Next |
-| 3 | Fundamentals (income, balance sheet, cash flow, earnings) | |
+| 2 | Quote / info / fastInfo / calendar / recommendations | ✅ Done |
+| 3 | Fundamentals (income, balance sheet, cash flow, earnings) | ⏳ Next |
 | 4 | Holders / insiders / analysis | |
 | 5 | Options chains | |
 | 6 | Bulk download + Tickers | |

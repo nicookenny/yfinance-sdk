@@ -21,6 +21,20 @@ import type {
   HistoryRow,
   Split,
 } from "./history-types.js";
+import {
+  fetchCalendar,
+  fetchFastInfo,
+  fetchInfo,
+  fetchQuoteSummary,
+  fetchRecommendations,
+} from "./quote.js";
+import type {
+  Calendar,
+  FastInfo,
+  Info,
+  QuoteSummary,
+  RecommendationRow,
+} from "./quote-types.js";
 
 export class Ticker {
   readonly symbol: string;
@@ -88,5 +102,44 @@ export class Ticker {
       ),
     ];
     return merged.sort((a, b) => a.date.getTime() - b.date.getTime());
+  }
+
+  /** Flattened company/quote info (yfinance `.info`). */
+  async info(options?: { signal?: AbortSignal }): Promise<Info> {
+    return fetchInfo(this.client, this.symbol, options?.signal);
+  }
+
+  /** Lightweight price/size snapshot (yfinance `.fast_info`). */
+  async fastInfo(options?: { signal?: AbortSignal }): Promise<FastInfo> {
+    return fetchFastInfo(this.client, this.symbol, options?.signal);
+  }
+
+  /** Raw `quoteSummary` modules, unwrapped. Defaults to the info module set. */
+  async quoteSummary(
+    modules?: readonly string[],
+    options?: { signal?: AbortSignal },
+  ): Promise<QuoteSummary> {
+    const mods = modules ?? [
+      "assetProfile",
+      "summaryProfile",
+      "summaryDetail",
+      "quoteType",
+      "defaultKeyStatistics",
+      "price",
+      "financialData",
+    ];
+    return fetchQuoteSummary(this.client, this.symbol, mods, options?.signal);
+  }
+
+  /** Upcoming earnings/dividend calendar. */
+  async calendar(options?: { signal?: AbortSignal }): Promise<Calendar> {
+    return fetchCalendar(this.client, this.symbol, options?.signal);
+  }
+
+  /** Analyst recommendation trend, one row per period. */
+  async recommendations(
+    options?: { signal?: AbortSignal },
+  ): Promise<RecommendationRow[]> {
+    return fetchRecommendations(this.client, this.symbol, options?.signal);
   }
 }
