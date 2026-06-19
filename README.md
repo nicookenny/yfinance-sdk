@@ -7,8 +7,9 @@ A typed TypeScript port of [yfinance](https://github.com/ranaroussi/yfinance) fo
 - Organized by domain, not by mirroring yfinance's Python internals.
 - Typed error hierarchy, pluggable cache, built-in rate limiting and auth.
 
-> Status: **Steps 0–2 complete** (HTTP core + Ticker history + quote/info).
-> Higher-level modules are landing incrementally — see the roadmap below.
+> Status: **Steps 0–3 complete** (HTTP core, history, quote/info,
+> fundamentals). Higher-level modules are landing incrementally — see the
+> roadmap below.
 
 ## Install
 
@@ -44,6 +45,11 @@ const fast = await aapl.fastInfo();        // cheap snapshot: price, marketCap, 
 const cal = await aapl.calendar();         // earnings + dividend dates
 const recs = await aapl.recommendations(); // analyst trend per period
 const raw = await aapl.quoteSummary(["price", "summaryDetail"]); // typed modules
+
+const income = await aapl.incomeStatement();                 // annual rows
+const balance = await aapl.balanceSheet({ frequency: "quarterly" });
+const cash = await aapl.cashflow();
+// each row: { date, TotalRevenue, NetIncome, ... } keyed by Yahoo metric name
 ```
 
 ## Usage (core layer)
@@ -101,8 +107,8 @@ All thrown errors extend `YahooFinanceError`:
 | 0 | Foundation (HTTP core: client, auth, cache, rate-limit, errors) | ✅ Done |
 | 1 | Ticker + history (OHLCV, dividends, splits) | ✅ Done |
 | 2 | Quote / info / fastInfo / calendar / recommendations | ✅ Done |
-| 3 | Fundamentals (income, balance sheet, cash flow, earnings) | ⏳ Next |
-| 4 | Holders / insiders / analysis | |
+| 3 | Fundamentals (income, balance sheet, cash flow) | ✅ Done |
+| 4 | Holders / insiders / analysis | ⏳ Next |
 | 5 | Options chains | |
 | 6 | Bulk download + Tickers | |
 | 7 | Search / Lookup / Screener | |

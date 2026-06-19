@@ -35,6 +35,7 @@ import type {
   QuoteSummary,
   RecommendationRow,
 } from "./quote-types.js";
+import { fetchStatement, type StatementOptions, type StatementRow } from "./fundamentals.js";
 
 export class Ticker {
   readonly symbol: string;
@@ -141,5 +142,20 @@ export class Ticker {
     options?: { signal?: AbortSignal },
   ): Promise<RecommendationRow[]> {
     return fetchRecommendations(this.client, this.symbol, options?.signal);
+  }
+
+  /** Income statement rows (annual by default). yfinance `.financials`. */
+  async incomeStatement(options?: StatementOptions): Promise<StatementRow[]> {
+    return fetchStatement(this.client, this.symbol, "income", options);
+  }
+
+  /** Balance sheet rows (annual by default). yfinance `.balance_sheet`. */
+  async balanceSheet(options?: StatementOptions): Promise<StatementRow[]> {
+    return fetchStatement(this.client, this.symbol, "balance", options);
+  }
+
+  /** Cash flow statement rows (annual by default). yfinance `.cashflow`. */
+  async cashflow(options?: StatementOptions): Promise<StatementRow[]> {
+    return fetchStatement(this.client, this.symbol, "cashflow", options);
   }
 }
