@@ -7,10 +7,10 @@ A typed TypeScript port of [yfinance](https://github.com/ranaroussi/yfinance) fo
 - Organized by domain, not by mirroring yfinance's Python internals.
 - Typed error hierarchy, pluggable cache, built-in rate limiting and auth.
 
-> Status: **Steps 0–9 complete** (HTTP core, history, quote/info,
-> fundamentals, holders/analysis, options, bulk download, search/lookup/
-> screener, domain, funds). Live streaming (Step 10) is the last piece — see
-> the roadmap.
+> Status: **All 10 steps complete** — a full TypeScript port of yfinance's
+> surface: history, quote/info, fundamentals, holders/analysis, options, bulk
+> download, search/lookup/screener, domain, funds, and live streaming. 95
+> hermetic tests; ESM + CJS build.
 
 ## Install
 
@@ -51,6 +51,34 @@ const income = await aapl.incomeStatement();                 // annual rows
 const balance = await aapl.balanceSheet({ frequency: "quarterly" });
 const cash = await aapl.cashflow();
 // each row: { date, TotalRevenue, NetIncome, ... } keyed by Yahoo metric name
+```
+
+## Usage (search, screener, domain, funds, live)
+
+```ts
+import { YahooClient, search, lookup, screen, and, gt, eq, Sector, Market } from "yahoo-finance-ts";
+
+const client = new YahooClient();
+const { quotes } = await search(client, "apple");
+const matches = await lookup(client, "vanguard", { type: "etf" });
+
+const gainers = await screen(client, "day_gainers", { count: 10 });
+const bigCaps = await screen(client, and(gt("intradaymarketcap", 1e11), eq("region", "us")));
+
+const tech = await new Sector("technology", client).fetch();
+const summary = await new Market("US", client).summary();
+
+const etf = await new (await import("yahoo-finance-ts")).Ticker("VOO", client).fundsData();
+```
+
+```ts
+import { LiveStream } from "yahoo-finance-ts";
+
+const stream = new LiveStream();
+stream.on("pricing", (q) => console.log(q.id, q.price, q.changePercent));
+stream.subscribe(["AAPL", "BTC-USD"]);
+await stream.connect();
+// later: stream.close();
 ```
 
 ## Usage (core layer)
@@ -115,7 +143,7 @@ All thrown errors extend `YahooFinanceError`:
 | 7 | Search / Lookup / Screener (+ query builder) | ✅ Done |
 | 8 | Domain: Market / Sector / Industry | ✅ Done |
 | 9 | Funds / ETF holdings | ✅ Done |
-| 10 | Live WebSocket streaming | ⏳ Next |
+| 10 | Live WebSocket streaming | ✅ Done |
 
 ## Development
 
