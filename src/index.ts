@@ -10,3 +10,4 @@ export * from "./ticker/index.js";
 export { download } from "./download.js";
 export type { DownloadOptions, DownloadResult } from "./download.js";
 export { Tickers } from "./tickers.js";
+export * from "./search/index.js";

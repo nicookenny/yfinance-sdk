@@ -111,6 +111,21 @@ export class YahooClient {
     return data;
   }
 
+  /** POSTs a JSON body and parses the JSON response (never cached). */
+  async postJson<T>(
+    url: string | URL,
+    body: unknown,
+    options: GetJsonOptions = {},
+  ): Promise<T> {
+    const baseUrl = buildUrl(url, options.params);
+    return this.limiter.run(() =>
+      this.requestJson<T>(baseUrl, options.crumb ?? true, options.signal, {
+        method: "POST",
+        body: JSON.stringify(body),
+      }),
+    );
+  }
+
   /** Discards cached credentials; the next authenticated call re-acquires them. */
   resetAuth(): void {
     this.auth.invalidate();
@@ -120,6 +135,7 @@ export class YahooClient {
     baseUrl: string,
     needsCrumb: boolean,
     signal: AbortSignal | undefined,
+    body?: { method: string; body: string },
   ): Promise<T> {
     let reauthed = false;
 
@@ -134,7 +150,7 @@ export class YahooClient {
 
       let res: Response;
       try {
-        res = await this.doFetch(url, cookie, signal);
+        res = await this.doFetch(url, cookie, signal, body);
       } catch (cause) {
         if (attempt < this.retries && !isAbort(cause)) {
           await this.backoff(attempt);
@@ -173,21 +189,24 @@ export class YahooClient {
     url: string,
     cookie: string | undefined,
     signal: AbortSignal | undefined,
+    body?: { method: string; body: string },
   ): Promise<Response> {
     const headers: Record<string, string> = {
       "User-Agent": this.userAgent,
       Accept: "application/json,text/plain,*/*",
     };
     if (cookie) headers.Cookie = cookie;
+    if (body) headers["Content-Type"] = "application/json";
 
     const timeout = AbortSignal.timeout(this.timeoutMs);
     const composite = signal ? anySignal([signal, timeout]) : timeout;
 
     return this.fetch(url, {
-      method: "GET",
+      method: body?.method ?? "GET",
       headers,
       redirect: "follow",
       signal: composite,
+      ...(body ? { body: body.body } : {}),
     });
   }
 
