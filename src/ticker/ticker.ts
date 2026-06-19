@@ -36,6 +36,28 @@ import type {
   RecommendationRow,
 } from "./quote-types.js";
 import { fetchStatement, type StatementOptions, type StatementRow } from "./fundamentals.js";
+import {
+  fetchMajorHolders,
+  fetchInstitutionalHolders,
+  fetchMutualFundHolders,
+  fetchInsiderTransactions,
+  fetchInsiderRoster,
+  type MajorHolders,
+  type InstitutionalHolder,
+  type InsiderTransaction,
+  type InsiderRosterMember,
+} from "./holders.js";
+import {
+  fetchPriceTargets,
+  fetchEarningsEstimate,
+  fetchRevenueEstimate,
+  fetchEpsTrend,
+  type PriceTargets,
+  type EstimateRow,
+  type EpsTrendRow,
+} from "./analysis.js";
+
+type SignalOpt = { signal?: AbortSignal };
 
 export class Ticker {
   readonly symbol: string;
@@ -157,5 +179,54 @@ export class Ticker {
   /** Cash flow statement rows (annual by default). yfinance `.cashflow`. */
   async cashflow(options?: StatementOptions): Promise<StatementRow[]> {
     return fetchStatement(this.client, this.symbol, "cashflow", options);
+  }
+
+  // --- Holders & insiders ---
+
+  /** Aggregate insider/institution ownership percentages. */
+  async majorHolders(options?: SignalOpt): Promise<MajorHolders> {
+    return fetchMajorHolders(this.client, this.symbol, options?.signal);
+  }
+
+  /** Top institutional holders. */
+  async institutionalHolders(options?: SignalOpt): Promise<InstitutionalHolder[]> {
+    return fetchInstitutionalHolders(this.client, this.symbol, options?.signal);
+  }
+
+  /** Top mutual-fund holders. */
+  async mutualFundHolders(options?: SignalOpt): Promise<InstitutionalHolder[]> {
+    return fetchMutualFundHolders(this.client, this.symbol, options?.signal);
+  }
+
+  /** Recent insider transactions. */
+  async insiderTransactions(options?: SignalOpt): Promise<InsiderTransaction[]> {
+    return fetchInsiderTransactions(this.client, this.symbol, options?.signal);
+  }
+
+  /** Current insider roster. */
+  async insiderRoster(options?: SignalOpt): Promise<InsiderRosterMember[]> {
+    return fetchInsiderRoster(this.client, this.symbol, options?.signal);
+  }
+
+  // --- Analyst data ---
+
+  /** Analyst price-target consensus. */
+  async analystPriceTargets(options?: SignalOpt): Promise<PriceTargets> {
+    return fetchPriceTargets(this.client, this.symbol, options?.signal);
+  }
+
+  /** Earnings (EPS) estimates per period. */
+  async earningsEstimate(options?: SignalOpt): Promise<EstimateRow[]> {
+    return fetchEarningsEstimate(this.client, this.symbol, options?.signal);
+  }
+
+  /** Revenue estimates per period. */
+  async revenueEstimate(options?: SignalOpt): Promise<EstimateRow[]> {
+    return fetchRevenueEstimate(this.client, this.symbol, options?.signal);
+  }
+
+  /** EPS trend (current vs 7/30/60/90 days ago) per period. */
+  async epsTrend(options?: SignalOpt): Promise<EpsTrendRow[]> {
+    return fetchEpsTrend(this.client, this.symbol, options?.signal);
   }
 }
