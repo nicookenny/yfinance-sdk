@@ -6,3 +6,4 @@
  * from here.
  */
 export * from "./core/index.js";
+export * from "./ticker/index.js";

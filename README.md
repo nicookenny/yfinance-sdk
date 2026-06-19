@@ -7,8 +7,8 @@ A typed TypeScript port of [yfinance](https://github.com/ranaroussi/yfinance) fo
 - Organized by domain, not by mirroring yfinance's Python internals.
 - Typed error hierarchy, pluggable cache, built-in rate limiting and auth.
 
-> Status: **Step 0 (Foundation) complete.** Higher-level modules are landing
-> incrementally — see the roadmap below.
+> Status: **Steps 0–1 complete** (HTTP core + Ticker history). Higher-level
+> modules are landing incrementally — see the roadmap below.
 
 ## Install
 
@@ -17,6 +17,26 @@ npm install yahoo-finance-ts
 ```
 
 Requires Node.js 18+ (native `fetch`).
+
+## Usage (Ticker)
+
+```ts
+import { Ticker } from "yahoo-finance-ts";
+
+const aapl = new Ticker("AAPL");
+
+const rows = await aapl.history({ period: "1mo", interval: "1d" });
+// rows: { date, open, high, low, close, adjClose, volume, dividends?, stockSplits? }[]
+
+const dividends = await aapl.dividends(); // { date, amount }[]
+const splits = await aapl.splits();       // { date, ratio, numerator, denominator }[]
+const actions = await aapl.actions();     // merged, chronologically sorted
+```
+
+By default `history()` auto-adjusts OHLC with the adjusted close (set
+`autoAdjust: false` to keep raw prices and the `adjClose` column) and includes
+dividend/split columns (`actions: false` to omit). Use `start`/`end` (Date,
+ms-epoch, or `YYYY-MM-DD`) for an explicit range instead of `period`.
 
 ## Usage (core layer)
 
@@ -71,8 +91,8 @@ All thrown errors extend `YahooFinanceError`:
 | Step | Module | Status |
 |------|--------|--------|
 | 0 | Foundation (HTTP core: client, auth, cache, rate-limit, errors) | ✅ Done |
-| 1 | Ticker + history (OHLCV, dividends, splits) | ⏳ Next |
-| 2 | Quote / info / news / calendar | |
+| 1 | Ticker + history (OHLCV, dividends, splits) | ✅ Done |
+| 2 | Quote / info / news / calendar | ⏳ Next |
 | 3 | Fundamentals (income, balance sheet, cash flow, earnings) | |
 | 4 | Holders / insiders / analysis | |
 | 5 | Options chains | |
