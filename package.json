@@ -1,11 +1,15 @@
 {
-  "name": "yahoo-finance-ts",
+  "name": "yf-sdk",
   "version": "0.1.0",
-  "description": "TypeScript port of yfinance — typed Yahoo Finance market data client for Node.js",
+  "description": "YF SDK — a typed TypeScript port of yfinance: Yahoo Finance market data for Node.js",
   "type": "module",
   "license": "Apache-2.0",
+  "author": "nicokenny",
   "engines": {
     "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -31,9 +35,13 @@
     "yahoo",
     "finance",
     "yfinance",
+    "yf-sdk",
     "stocks",
+    "etf",
+    "options",
     "market-data",
-    "ticker"
+    "ticker",
+    "typescript"
   ],
   "devDependencies": {
     "@types/node": "^22.10.0",
