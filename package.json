@@ -1,10 +1,18 @@
 {
   "name": "yf-sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "YF SDK — a typed TypeScript port of yfinance: Yahoo Finance market data for Node.js",
   "type": "module",
   "license": "Apache-2.0",
   "author": "nicokenny",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicookenny/Yahoo-Finance-SDK.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nicookenny/Yahoo-Finance-SDK/issues"
+  },
+  "homepage": "https://github.com/nicookenny/Yahoo-Finance-SDK#readme",
   "engines": {
     "node": ">=18"
   },
