@@ -1,4 +1,4 @@
-/** `Sector` — a Yahoo Finance sector (e.g. "technology"). */
+/** `Sector` — a market sector (e.g. "technology"). */
 import { YahooClient } from "../core/client.js";
 import {
   fetchDomain,

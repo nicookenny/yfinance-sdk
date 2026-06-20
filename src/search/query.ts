@@ -5,7 +5,7 @@
  * Compose leaf comparisons with the logical `and` / `or` combinators:
  *
  * ```ts
- * import { and, gt, eq } from "yahoo-finance-ts";
+ * import { and, gt, eq } from "yf-sdk";
  * const q = and(gt("intradaymarketcap", 1e9), eq("region", "us"));
  * ```
  */

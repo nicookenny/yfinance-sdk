@@ -1,9 +1,8 @@
 /**
- * yahoo-finance-ts — a typed TypeScript port of yfinance for Node.js.
+ * yfinance-sdk (yf-sdk) — a typed TypeScript port of yfinance for Node.js.
  *
- * Step 0 (Foundation) ships the core HTTP layer. Higher-level modules
- * (Ticker, history, financials, …) are added in subsequent steps and re-exported
- * from here.
+ * Exposes the core HTTP layer plus the higher-level modules (Ticker, history,
+ * financials, holders, options, search, domain, funds, live) re-exported here.
  */
 export * from "./core/index.js";
 export * from "./ticker/index.js";

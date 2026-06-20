@@ -1,8 +1,8 @@
-# YF SDK
+# yfinance-sdk
 
 **A typed TypeScript port of [yfinance](https://github.com/ranaroussi/yfinance) for Node.js.**
 
-`yf-sdk` brings the full surface of Yahoo Finance market data to TypeScript — prices, fundamentals, options, holders, analyst data, search, screeners, sectors, funds, and live streaming — with first-class types and zero runtime dependencies.
+`yf-sdk` brings the full surface of yfinance to TypeScript — prices, fundamentals, options, holders, analyst data, search, screeners, sectors, funds, and live streaming — with first-class types and zero runtime dependencies.
 
 [![npm](https://img.shields.io/npm/v/yf-sdk.svg)](https://www.npmjs.com/package/yf-sdk)
 

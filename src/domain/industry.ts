@@ -1,4 +1,4 @@
-/** `Industry` — a Yahoo Finance industry within a sector. */
+/** `Industry` — a market industry within a sector. */
 import { YahooClient } from "../core/client.js";
 import {
   fetchDomain,

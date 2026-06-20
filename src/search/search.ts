@@ -41,7 +41,7 @@ interface RawSearch {
   news?: Array<Record<string, unknown>>;
 }
 
-/** Searches Yahoo Finance for symbols and related news. */
+/** Searches for symbols and related news. */
 export async function search(
   client: YahooClient,
   query: string,
